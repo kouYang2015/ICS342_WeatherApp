@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">WeatherApp</string>
+    <string name="app_name">Kou\'s WeatherApp</string>
+    <string name="st_paul_mn">St.Paul, MN</string>
+    <string name="temp">72°</string>
+    <string name="feels_like">Feels Like 78°</string>
+    <string name="low">Low of 65°</string>
+    <string name="high">High of 80°</string>
+    <string name="humidity">Humidity 100%</string>
+    <string name="pressure">Pressure 1023 hPa</string>
 </resources>
