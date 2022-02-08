@@ -36,12 +36,12 @@
         android:layout_height="75dp"
         android:contentDescription="@null"
         android:importantForAccessibility="no"
-        android:src="@drawable/sun"
         android:scaleType="center"
+        android:src="@drawable/sun"
+        app:layout_constraintBottom_toBottomOf="@id/temp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/temp"
         app:layout_constraintTop_toTopOf="@id/temp"
-        app:layout_constraintBottom_toBottomOf="@id/temp"
 
         />
 
@@ -95,6 +95,17 @@
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@id/humidity"
         app:layout_constraintTop_toBottomOf="@id/humidity" />
+
+    <Button
+        android:id="@+id/forecast_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forecastButton"
+        android:textColor="@color/black"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/city_name"
+        app:layout_constraintTop_toBottomOf="@+id/pressure"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
