@@ -101,11 +101,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/forecastButton"
-        android:textColor="@color/black"
-        android:background="@color/black"
         app:layout_constraintStart_toStartOf="@+id/city_name"
         app:layout_constraintTop_toBottomOf="@+id/pressure"
         />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
