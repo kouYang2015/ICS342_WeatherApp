@@ -41,8 +41,7 @@
         app:layout_constraintBottom_toBottomOf="@id/temp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/temp"
-        app:layout_constraintTop_toTopOf="@id/temp"
-        />
+        app:layout_constraintTop_toTopOf="@id/temp" />
 
     <TextView
         android:id="@+id/feels_like"
@@ -101,7 +100,6 @@
         android:layout_height="wrap_content"
         android:text="@string/forecastButton"
         app:layout_constraintStart_toStartOf="@+id/city_name"
-        app:layout_constraintTop_toBottomOf="@+id/pressure"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/pressure" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
