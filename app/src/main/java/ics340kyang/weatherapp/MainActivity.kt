@@ -8,16 +8,16 @@ import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var button: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // storing ID of the button in a variable
-        val button = findViewById<Button>(R.id.forecast_button)
+        button = findViewById<Button>(R.id.forecast_button)
 
         // operations to be performed when user tap on the button
-        button?.setOnClickListener()
-        {
+        button?.setOnClickListener() {
             val intent = Intent(this, ForecastActivity::class.java)
             startActivity(intent)
         }

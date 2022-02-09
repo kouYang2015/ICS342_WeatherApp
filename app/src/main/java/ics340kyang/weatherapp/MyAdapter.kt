@@ -11,17 +11,36 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class MyAdapter(private val data: List<Data>) : RecyclerView.Adapter<MyAdapter.ViewHolder>(){
+class MyAdapter(private val data: List<DayForecast>) :
+    RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+    @SuppressLint("NewApi")
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val dateView: TextView = view.findViewById(R.id.date)
+        private val dateFormatter = DateTimeFormatter.ofPattern("MMM dd")
+        private val hourlyFormatter = DateTimeFormatter.ofPattern("hh:mma")
+        private val sunriseView: TextView = view.findViewById(R.id.sunrise)
+        private val sunsetView: TextView = view.findViewById(R.id.sunset)
+        private val tempView: TextView = view.findViewById(R.id.tempFor)
+        private val lowView: TextView = view.findViewById(R.id.lowFor)
+        private val highView: TextView = view.findViewById(R.id.highFor)
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val dateView: TextView = view.findViewById(R.id.date)
-
-        @SuppressLint("NewApi")
-        fun bind(data: Data){
-            val instant = Instant.ofEpochSecond(data.date)
+        fun bind(dayForecast: DayForecast) {
+            val instant = Instant.ofEpochSecond(dayForecast.date)
             val dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
-            val formatter = DateTimeFormatter.ofPattern("MMM dd")
-            dateView.text = formatter.format(dateTime)
+            val sunriseTime = LocalDateTime.ofInstant(
+                Instant.ofEpochSecond(dayForecast.sunrise),
+                ZoneId.systemDefault()
+            )
+            val sunsetTime = LocalDateTime.ofInstant(
+                Instant.ofEpochSecond(dayForecast.sunset),
+                ZoneId.systemDefault()
+            )
+            dateView.text = dateFormatter.format(dateTime)
+            sunriseView.text = "Sunrise: " + hourlyFormatter.format(sunriseTime)
+            sunsetView.text = "Sunset: " + hourlyFormatter.format(sunsetTime)
+            tempView.text = "Temp: " + dayForecast.temp.day.toInt() + "°"
+            lowView.text = "Low: " + dayForecast.temp.min.toInt() + "°"
+            highView.text = "High: " + dayForecast.temp.max.toInt() + "°"
         }
     }
 
