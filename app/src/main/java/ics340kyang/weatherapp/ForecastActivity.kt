@@ -52,11 +52,9 @@ class ForecastActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forecast)
 
+        // Creates back button next to activity title
         val actionBar = supportActionBar
-
-        actionBar!!.title = "ForecastActivity"
-
-        actionBar.setDisplayHomeAsUpEnabled(true)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
