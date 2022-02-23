@@ -63,10 +63,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume(){
+    override fun onResume() {
         super.onResume()
         val call: Call<CurrentConditions> = api.getCurrentConditions("55429")
-        call.enqueue(object : Callback<CurrentConditions>{
+        call.enqueue(object : Callback<CurrentConditions> {
             override fun onResponse(
                 call: Call<CurrentConditions>,
                 response: Response<CurrentConditions>
@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                     bindData(it)
                 }
             }
+
             override fun onFailure(call: Call<CurrentConditions>, t: Throwable) {
                 t.printStackTrace()
             }
@@ -83,14 +84,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     //Binds data from the response object
-    private fun bindData(currentConditions: CurrentConditions){
+    private fun bindData(currentConditions: CurrentConditions) {
         cityName.text = currentConditions.name
         currentTemp.text = getString(R.string.temp, currentConditions.main.temp.toInt())
         feelsLike.text = getString(R.string.feels_like, currentConditions.main.feelsLike.toInt())
         currentLow.text = getString(R.string.low, currentConditions.main.tempMin.toInt())
         currentHigh.text = getString(R.string.high, currentConditions.main.tempMax.toInt())
         currentHumidity.text = getString(R.string.humidity, currentConditions.main.humidity.toInt())
-        currentPressure.text = getString(R.string.pressure, currentConditions.main.feelsLike.toInt())
+        currentPressure.text =
+            getString(R.string.pressure, currentConditions.main.feelsLike.toInt())
         val iconName = currentConditions.weather.firstOrNull()?.icon
         val iconUrl = "https://openweathermap.org/img/wn/${iconName}@2x.png"
         Glide.with(this)

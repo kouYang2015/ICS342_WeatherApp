@@ -27,8 +27,8 @@ class MyAdapter(private val data: List<DayForecast>) :
         private val highView: TextView = view.findViewById(R.id.highFor)
         private val conditionIcon: ImageView = view.findViewById(R.id.forecast_cond_icon)
 
-        // TODO: Might not need to pass view: View
-        fun bind(dayForecast: DayForecast, view: View) {
+
+        fun bind(dayForecast: DayForecast) {
             val instant = Instant.ofEpochSecond(dayForecast.date)
             val dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
             val sunriseTime = LocalDateTime.ofInstant(
@@ -40,7 +40,6 @@ class MyAdapter(private val data: List<DayForecast>) :
                 ZoneId.systemDefault()
             )
 
-            // TODO: Why this instead of in row_data.xml+string.xml?
             dateView.text = dateFormatter.format(dateTime)
             sunriseView.text = "Sunrise: " + hourlyFormatter.format(sunriseTime)
             sunsetView.text = "Sunset: " + hourlyFormatter.format(sunsetTime)
@@ -49,18 +48,9 @@ class MyAdapter(private val data: List<DayForecast>) :
             highView.text = "High: " + dayForecast.temp.max.toInt() + "°"
             val iconName = dayForecast.weather.firstOrNull()?.icon
             val iconUrl = "https://openweathermap.org/img/wn/${iconName}@2x.png"
-            // TODO: check which way is best practice. All work
-/*            Glide.with(this.itemView.context)
-                .load(iconUrl)
-                .into(conditionIcon)*/
-
-            Glide.with(view.context)
+            Glide.with(this.itemView.context)
                 .load(iconUrl)
                 .into(conditionIcon)
-
-/*            Glide.with(view)
-                .load(iconUrl)
-                .into(conditionIcon)*/
         }
     }
 
@@ -71,7 +61,7 @@ class MyAdapter(private val data: List<DayForecast>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(data[position], holder.itemView) // TODO: Might not need to pass view: View
+        holder.bind(data[position])
     }
 
     override fun getItemCount() = data.size
