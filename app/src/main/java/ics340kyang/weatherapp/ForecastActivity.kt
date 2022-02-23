@@ -4,13 +4,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 
 class ForecastActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
 
-    val forecastTempData = listOf<ForecastTemp>(
+/*    val forecastTempData = listOf<ForecastTemp>(
         ForecastTemp(30F, 25F, 40F),
         ForecastTemp(23F, 21F, 25F),
         ForecastTemp(11F, 9F, 15F),
@@ -46,18 +53,58 @@ class ForecastActivity : AppCompatActivity() {
         DayForecast(1645508280, 1644322900, 1644365440, forecastTempData[13], 94F, 1043),
         DayForecast(1645554680, 1644323000, 1644365540, forecastTempData[14], 88F, 1047),
         DayForecast(1645601080, 1644323100, 1644365640, forecastTempData[15], 78F, 1078),
-    )
-
+    )*/
+    private lateinit var api2: Api
+    var adapterData = listOf<DayForecast>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forecast)
 
+        val moshi2 = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+        val retrofit2 = Retrofit.Builder()
+            .baseUrl("https:api.openweathermap.org/data/2.5/")
+            .addConverterFactory(MoshiConverterFactory.create(moshi2))
+            .build()
+
+        api2 = retrofit2.create(Api::class.java)
+
         // Creates back button next to activity title
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = MyAdapter(adapterData)
+        //recyclerView.adapter = MyAdapter(adapterData) // TODO: This doesn't work.
+    }
+
+    override fun onResume(){
+        super.onResume()
+        val call: Call<ForecastList> = api2.getForecast("55429")
+        call.enqueue(object : Callback<ForecastList> {
+            override fun onResponse(
+                call: Call<ForecastList>,
+                response: Response<ForecastList>
+            ) {
+                val forecastList = response.body()
+                forecastList?.let {
+                    bindData(it)
+                    //recyclerView.adapter = MyAdapter(adapterData) // TODO: Is this appropriate?
+                }
+            }
+            override fun onFailure(call: Call<ForecastList>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+        // TODO: how come we are able to do all the recyclerView stuff here instead of onCreate? Which way is better?
+/*        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)*/
+        //recyclerView.adapter = MyAdapter(adapterData) // TODO: this doesnt work
+    }
+
+    //Binds data from the response object
+    private fun bindData(forecastList: ForecastList){
+        adapterData = forecastList.list
+        //recyclerView.adapter = MyAdapter(adapterData) // TODO: Is this appropriate?
     }
 }

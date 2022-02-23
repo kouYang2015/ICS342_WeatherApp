@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume(){
         super.onResume()
-        val call: Call<CurrentConditions> = api.getCurrentConditions("53083")
+        val call: Call<CurrentConditions> = api.getCurrentConditions("55429")
         call.enqueue(object : Callback<CurrentConditions>{
             override fun onResponse(
                 call: Call<CurrentConditions>,
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<CurrentConditions>, t: Throwable) {
-                TODO("Not yet implemented")
+                t.printStackTrace()
             }
         })
     }

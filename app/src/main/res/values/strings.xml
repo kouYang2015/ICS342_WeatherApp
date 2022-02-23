@@ -9,4 +9,5 @@
     <string name="pressure">Pressure %1$d hPa</string>
     <string name="forecastButton">Forecast</string>
     <string name="forecastTitle">Forecast</string>
+    <string name="tempFor">Temp: %1$d°</string>
 </resources>
