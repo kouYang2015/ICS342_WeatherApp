@@ -6,13 +6,12 @@
     android:layout_height="80dp">
 
     <ImageView
-        android:id="@+id/sun2"
+        android:id="@+id/forecast_cond_icon"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:contentDescription="@null"
         android:importantForAccessibility="no"
         android:scaleType="center"
-        android:src="@drawable/sun"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,9 +23,9 @@
         android:paddingHorizontal="12dp"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/sun2"
-        app:layout_constraintStart_toEndOf="@id/sun2"
-        app:layout_constraintTop_toTopOf="@id/sun2" />
+        app:layout_constraintBottom_toBottomOf="@id/forecast_cond_icon"
+        app:layout_constraintStart_toEndOf="@id/forecast_cond_icon"
+        app:layout_constraintTop_toTopOf="@id/forecast_cond_icon" />
 
     <TextView
         android:id="@+id/sunrise"

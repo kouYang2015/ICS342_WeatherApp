@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -23,6 +25,8 @@ class MyAdapter(private val data: List<DayForecast>) :
         private val tempView: TextView = view.findViewById(R.id.tempFor)
         private val lowView: TextView = view.findViewById(R.id.lowFor)
         private val highView: TextView = view.findViewById(R.id.highFor)
+        private val conditionIcon: ImageView = view.findViewById(R.id.forecast_cond_icon)
+
 
         fun bind(dayForecast: DayForecast) {
             val instant = Instant.ofEpochSecond(dayForecast.date)
@@ -35,12 +39,18 @@ class MyAdapter(private val data: List<DayForecast>) :
                 Instant.ofEpochSecond(dayForecast.sunset),
                 ZoneId.systemDefault()
             )
+
             dateView.text = dateFormatter.format(dateTime)
             sunriseView.text = "Sunrise: " + hourlyFormatter.format(sunriseTime)
             sunsetView.text = "Sunset: " + hourlyFormatter.format(sunsetTime)
             tempView.text = "Temp: " + dayForecast.temp.day.toInt() + "°"
             lowView.text = "Low: " + dayForecast.temp.min.toInt() + "°"
             highView.text = "High: " + dayForecast.temp.max.toInt() + "°"
+            val iconName = dayForecast.weather.firstOrNull()?.icon
+            val iconUrl = "https://openweathermap.org/img/wn/${iconName}@2x.png"
+            Glide.with(this.itemView.context)
+                .load(iconUrl)
+                .into(conditionIcon)
         }
     }
 
@@ -55,6 +65,4 @@ class MyAdapter(private val data: List<DayForecast>) :
     }
 
     override fun getItemCount() = data.size
-
-
 }
