@@ -6,56 +6,39 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.hilt.android.AndroidEntryPoint
+import ics340kyang.weatherapp.databinding.ActivityForecastBinding
+import ics340kyang.weatherapp.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class ForecastActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
-    private lateinit var api: Api
+    @Inject lateinit var viewModel: ForecastViewModel
+    lateinit var binding: ActivityForecastBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forecast)
-
-        val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https:api.openweathermap.org/data/2.5/")
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
-
-        api = retrofit.create(Api::class.java)
-
+        binding = ActivityForecastBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         // Creates back button next to activity title
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onResume() {
         super.onResume()
-        val call: Call<ForecastList> = api.getForecast("55429")
-        call.enqueue(object : Callback<ForecastList> {
-            override fun onResponse(
-                call: Call<ForecastList>,
-                response: Response<ForecastList>
-            ) {
-                val forecastList = response.body()
-                forecastList?.let {
-                    recyclerView.adapter = MyAdapter(it.list)
-                }
-            }
-
-            override fun onFailure(call: Call<ForecastList>, t: Throwable) {
-                t.printStackTrace()
-            }
-        })
+        viewModel.forecastList.observe(this) {
+            recyclerView.adapter = MyAdapter(it.list)
+        }
+        viewModel.loadData()
     }
 }
