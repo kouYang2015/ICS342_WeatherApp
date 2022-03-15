@@ -4,29 +4,22 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ics340kyang.weatherapp.databinding.RowDataBinding
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class MyAdapter(private val data: List<DayForecast>) :
-    RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class ForecastAdapter(private val data: List<DayForecast>) :
+    RecyclerView.Adapter<ForecastAdapter.ViewHolder>() {
+
     @SuppressLint("NewApi")
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val dateView: TextView = view.findViewById(R.id.date)
+        private val binding: RowDataBinding = RowDataBinding.bind(view)
         private val dateFormatter = DateTimeFormatter.ofPattern("MMM dd")
         private val hourlyFormatter = DateTimeFormatter.ofPattern("hh:mma")
-        private val sunriseView: TextView = view.findViewById(R.id.sunrise)
-        private val sunsetView: TextView = view.findViewById(R.id.sunset)
-        private val tempView: TextView = view.findViewById(R.id.tempFor)
-        private val lowView: TextView = view.findViewById(R.id.lowFor)
-        private val highView: TextView = view.findViewById(R.id.highFor)
-        private val conditionIcon: ImageView = view.findViewById(R.id.forecast_cond_icon)
-
 
         fun bind(dayForecast: DayForecast) {
             val instant = Instant.ofEpochSecond(dayForecast.date)
@@ -40,17 +33,17 @@ class MyAdapter(private val data: List<DayForecast>) :
                 ZoneId.systemDefault()
             )
 
-            dateView.text = dateFormatter.format(dateTime)
-            sunriseView.text = "Sunrise: " + hourlyFormatter.format(sunriseTime)
-            sunsetView.text = "Sunset: " + hourlyFormatter.format(sunsetTime)
-            tempView.text = "Temp: " + dayForecast.temp.day.toInt() + "°"
-            lowView.text = "Low: " + dayForecast.temp.min.toInt() + "°"
-            highView.text = "High: " + dayForecast.temp.max.toInt() + "°"
+            binding.date.text = dateFormatter.format(dateTime)
+            binding.sunrise.text = "Sunrise: " + hourlyFormatter.format(sunriseTime)
+            binding.sunset.text = "Sunset: " + hourlyFormatter.format(sunsetTime)
+            binding.tempFor.text = "Temp: " + dayForecast.temp.day.toInt() + "°"
+            binding.lowFor.text = "Low: " + dayForecast.temp.min.toInt() + "°"
+            binding.highFor.text = "High: " + dayForecast.temp.max.toInt() + "°"
             val iconName = dayForecast.weather.firstOrNull()?.icon
             val iconUrl = "https://openweathermap.org/img/wn/${iconName}@2x.png"
             Glide.with(this.itemView.context)
                 .load(iconUrl)
-                .into(conditionIcon)
+                .into(binding.forecastCondIcon)
         }
     }
 
