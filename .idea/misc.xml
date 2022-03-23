@@ -5,7 +5,13 @@
       <map>
         <entry key="..\:/Users/Kou/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/activity_forecast.xml" value="0.15677083333333333" />
         <entry key="..\:/Users/Kou/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/activity_main.xml" value="0.2879999900124293" />
+        <entry key="..\:/Users/Kou/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/blank_fragment.xml" value="0.27395833333333336" />
+        <entry key="..\:/Users/Kou/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/fragment_blank.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/Kou/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/fragment_current_conditions.xml" value="0.27395833333333336" />
+        <entry key="..\:/Users/Kou/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/fragment_forecast.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/Kou/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/fragment_search.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/Kou/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/row_data.xml" value="0.2879999900124293" />
+        <entry key="..\:/Users/Kou/AndroidStudioProjects/WeatherApp/app/src/main/res/menu/bottom_navigation.xml" value="0.4578125" />
       </map>
     </option>
   </component>
