@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/searchFragment">
+
+    <fragment
+        android:id="@+id/currentConditionsFragment"
+        android:name="ics340kyang.weatherapp.CurrentConditionsFragment"
+        android:label="fragment_current_conditions"
+        tools:layout="@layout/fragment_current_conditions">
+        <action
+            android:id="@+id/action_currentConditionsFragment_to_forecastFragment"
+            app:destination="@id/forecastFragment" />
+        <argument
+            android:name="currentConditionObj"
+            app:argType="ics340kyang.weatherapp.CurrentConditions" />
+        <argument
+            android:name="zipInput"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="ics340kyang.weatherapp.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_currentConditionsFragment"
+            app:destination="@id/currentConditionsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/forecastFragment"
+        android:name="ics340kyang.weatherapp.ForecastFragment"
+        android:label="fragment_forecast"
+        tools:layout="@layout/fragment_forecast">
+        <argument
+            android:name="zipInput"
+            app:argType="string" />
+    </fragment>
+</navigation>
