@@ -54,7 +54,7 @@ class CurrentConditionsFragment : Fragment(R.layout.fragment_current_conditions)
         binding.forecastButton.setOnClickListener() {
             val action =
                 CurrentConditionsFragmentDirections.actionCurrentConditionsFragmentToForecastFragment(
-                    args.zipInput
+                    args.currentConditionObj.coordinates
                 )
             findNavController().navigate(action)
         }

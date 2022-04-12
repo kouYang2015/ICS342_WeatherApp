@@ -27,7 +27,7 @@ class SearchViewModel @Inject constructor(private val service: Api) : ViewModel(
         launch {
             try {
                 _currentConditionCall.value =
-                    zipCodeText.value?.let { service.getCurrentConditions(it) }
+                    zipCodeText.value?.let { service.getCurrentConditionsZip(it) }
             } catch (e: Throwable) {
                 _showErrorDialog.value = true
             } finally {

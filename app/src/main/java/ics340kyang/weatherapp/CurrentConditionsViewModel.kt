@@ -15,7 +15,7 @@ class CurrentConditionsViewModel @Inject constructor(private val service: Api) :
 
     fun loadData(zipInput: String) = runBlocking {
         launch {
-            _currentConditions.value = service.getCurrentConditions(zipInput)
+            _currentConditions.value = service.getCurrentConditionsZip(zipInput)
         }
     }
 }

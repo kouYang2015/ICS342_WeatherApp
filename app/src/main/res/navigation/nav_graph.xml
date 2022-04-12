@@ -37,7 +37,7 @@
         android:label="fragment_forecast"
         tools:layout="@layout/fragment_forecast">
         <argument
-            android:name="zipInput"
-            app:argType="string" />
+            android:name="coordinates"
+            app:argType="ics340kyang.weatherapp.Coordinates" />
     </fragment>
 </navigation>
