@@ -16,9 +16,6 @@
         <argument
             android:name="currentConditionObj"
             app:argType="ics340kyang.weatherapp.CurrentConditions" />
-        <argument
-            android:name="zipInput"
-            app:argType="string" />
     </fragment>
 
     <fragment
