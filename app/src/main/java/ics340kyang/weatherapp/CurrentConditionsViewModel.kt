@@ -18,4 +18,10 @@ class CurrentConditionsViewModel @Inject constructor(private val service: Api) :
             _currentConditions.value = service.getCurrentConditionsZip(zipInput)
         }
     }
+
+    fun loadData(lat: Double, long: Double) = runBlocking {
+        launch {
+                _currentConditions.value =  service.getCurrentConditionsLatLon(lat.toString(), long.toString())
+        }
+    }
 }

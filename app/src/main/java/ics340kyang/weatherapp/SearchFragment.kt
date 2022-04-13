@@ -63,13 +63,14 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             val zipInput = binding.searchInputTextBox.text.toString()
             viewModel.updateZipCode(zipInput)
             viewModel.submitZipButton()
+            System.out.println(viewModel.showErrorDialog.value)
             val currentConditions = viewModel.currentConditionCall.value
             val action = currentConditions?.let { currentConditions ->
                 SearchFragmentDirections.actionSearchFragmentToCurrentConditionsFragment(
                     currentConditions
                 )
             }
-            if (action != null) {
+            if (action != null && viewModel.showErrorDialog.value == false) {
                 findNavController().navigate(action)
             }
         }
@@ -123,7 +124,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     currentConditions
                 )
             }
-            if (action != null) {
+            if (action != null && viewModel.showErrorDialog.value == false) {
                 findNavController().navigate(action)
             }
         }
