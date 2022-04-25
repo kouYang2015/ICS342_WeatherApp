@@ -22,10 +22,10 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentForecastBinding.bind(view)
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
-        viewModel.forecastList.observe(this) {
+        viewModel.forecastList.observe(viewLifecycleOwner) {
             binding.recyclerView.adapter = ForecastAdapter(it.list)
         }
-        viewModel.loadData(args.zipInput)
+        viewModel.loadData(args.coordinates)
         binding.toolbar.title = "Forecast"
     }
 }

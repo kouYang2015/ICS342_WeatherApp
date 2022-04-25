@@ -1,11 +1,13 @@
 package ics340kyang.weatherapp
 
 import android.os.Parcelable
+import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CurrentConditions(
     val weather: List<WeatherCondition>,
     val main: Currents,
-    val name: String
+    val name: String,
+    @Json(name = "coord") val coordinates: Coordinates
 ) : Parcelable

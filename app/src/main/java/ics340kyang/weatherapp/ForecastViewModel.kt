@@ -13,7 +13,7 @@ class ForecastViewModel @Inject constructor(private val service: Api) : ViewMode
     val forecastList: LiveData<ForecastList>
         get() = _forecastList
 
-    fun loadData(zipInput: String) = runBlocking {
-        launch { _forecastList.value = service.getForecast(zipInput) }
+    fun loadData(locInput: Coordinates) = runBlocking {
+        launch { _forecastList.value = service.getForecastLatLon(locInput.latitude.toString(),locInput.longitude.toString()) }
     }
 }

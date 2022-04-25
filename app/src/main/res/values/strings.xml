@@ -15,4 +15,5 @@
     <string name="searchPrompt">Enter an US zip code</string>
     <string name="currentConditionsTitle">Current Conditions</string>
     <string name="ok">OK</string>
+    <string name="locReq_Button">Use My Location</string>
 </resources>

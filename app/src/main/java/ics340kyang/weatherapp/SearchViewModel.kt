@@ -13,6 +13,8 @@ class SearchViewModel @Inject constructor(private val service: Api) : ViewModel(
     private val _zipCodeText = MutableLiveData<String>()
     private val _currentConditionCall = MutableLiveData<CurrentConditions>()
     private val _showErrorDialog = MutableLiveData(false)
+    private val _latitude = MutableLiveData<String>()
+    private val _longitude = MutableLiveData<String>()
 
     val showErrorDialog: LiveData<Boolean>
         get() = _showErrorDialog
@@ -22,19 +24,44 @@ class SearchViewModel @Inject constructor(private val service: Api) : ViewModel(
         get() = _zipCodeText
     val currentConditionCall: LiveData<CurrentConditions>
         get() = _currentConditionCall
+    val latitude: LiveData<String>
+        get() = _latitude
+    val longitude: LiveData<String>
+        get() = _longitude
 
     fun submitZipButton() = runBlocking {
         launch {
             try {
                 _currentConditionCall.value =
-                    zipCodeText.value?.let { service.getCurrentConditions(it) }
+                    zipCodeText.value?.let { service.getCurrentConditionsZip(it) }
+                _showErrorDialog.value = false
             } catch (e: Throwable) {
                 _showErrorDialog.value = true
-            } finally {
-                _showErrorDialog.value = false
+                System.out.println("Call failed with zip")
             }
         }
+    }
 
+    fun submitLocationButton() = runBlocking {
+        launch {
+            try {
+                _currentConditionCall.value =
+                    latitude.value?.let { lat ->
+                        longitude.value?.let { long ->
+                            service.getCurrentConditionsLatLon(lat, long)
+                        }
+                    }
+                _showErrorDialog.value = false
+            } catch (e: Throwable) {
+                _showErrorDialog.value = true
+                System.out.println("Call failed with lat lon")
+            }
+        }
+    }
+
+    fun updateLocation(latIn: Double, longIn: Double) {
+        _latitude.value = latIn.toString()
+        _longitude.value = longIn.toString()
     }
 
     fun updateZipCode(zipcode: String) {

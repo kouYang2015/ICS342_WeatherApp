@@ -21,10 +21,7 @@ class CurrentConditionsFragment : Fragment(R.layout.fragment_current_conditions)
 
     override fun onResume() {
         super.onResume()
-        viewModel.currentConditions.observe(this) { currentConditions ->
-            bindData(currentConditions)
-        }
-        viewModel.loadData(args.zipInput)
+        bindData(args.currentConditionObj)
     }
 
     //Binds data from the response object
@@ -54,7 +51,7 @@ class CurrentConditionsFragment : Fragment(R.layout.fragment_current_conditions)
         binding.forecastButton.setOnClickListener() {
             val action =
                 CurrentConditionsFragmentDirections.actionCurrentConditionsFragmentToForecastFragment(
-                    args.zipInput
+                    args.currentConditionObj.coordinates
                 )
             findNavController().navigate(action)
         }
