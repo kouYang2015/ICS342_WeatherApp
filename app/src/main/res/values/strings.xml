@@ -16,4 +16,5 @@
     <string name="currentConditionsTitle">Current Conditions</string>
     <string name="ok">OK</string>
     <string name="locReq_Button">Use My Location</string>
+    <string name="notif_Button_text">Turn On Notification</string>
 </resources>

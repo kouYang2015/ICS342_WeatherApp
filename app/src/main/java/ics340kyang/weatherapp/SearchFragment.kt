@@ -85,6 +85,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 askLocPermission()
             }
         }
+        binding.notifButton.setOnClickListener {
+            //TODO: Ask for notifation permission, ask for location permission if not on
+        }
     }
 
     private fun askLocPermission() {
