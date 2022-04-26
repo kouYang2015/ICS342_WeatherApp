@@ -6,8 +6,8 @@ import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -67,26 +67,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         })
 
         binding.searchButton.setOnClickListener() {
-            val zipInput = binding.searchInputTextBox.text.toString()
-            viewModel.updateZipCode(zipInput)
-            viewModel.submitZipButton()
-            System.out.println(viewModel.showErrorDialog.value)
-            val currentConditions = viewModel.currentConditionCall.value
-            val action = currentConditions?.let { currentConditions ->
-                SearchFragmentDirections.actionSearchFragmentToCurrentConditionsFragment(
-                    currentConditions
-                )
-            }
-            if (action != null && viewModel.showErrorDialog.value == false) {
-                findNavController().navigate(action)
-            }
+            executeSearch()
         }
         binding.locReqButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    this.requireContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
+            if (hasCoarseLocPermission()) {
                 submitLastLocation()
             } else {
                 askLocPermission()
@@ -94,12 +78,53 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
         setNotifButtonText();
         binding.notifButton.setOnClickListener {
-            notifOn = !notifOn
+            if (hasCoarseLocPermission()) {
+               //Start service if location permission is on and notifOn is true. Flips text, flips notifOn
+                notifOn = !notifOn
+                setNotifButtonText()
+                if (notifOn) {
+                    startLocNotifService()
+                }
+                else {
+                    stopLocNotifService()
+                }
+            } else {
+                askLocPermission()
+            }
             //Ask for notifation permission, ask for location permission if not on
-            setNotifButtonText();
         }
     }
 
+    private fun executeSearch() {
+        val zipInput = binding.searchInputTextBox.text.toString()
+        viewModel.updateZipCode(zipInput)
+        viewModel.submitZipButton()
+        System.out.println(viewModel.showErrorDialog.value)
+        val currentConditions = viewModel.currentConditionCall.value
+        val action = currentConditions?.let { currentConditions ->
+            SearchFragmentDirections.actionSearchFragmentToCurrentConditionsFragment(
+                currentConditions
+            )
+        }
+        if (action != null && viewModel.showErrorDialog.value == false) {
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun stopLocNotifService() {
+        requireActivity().stopService(Intent(context, LocNotifService::class.java))
+    }
+
+    private fun startLocNotifService() {
+        requireActivity().startService(Intent(context, LocNotifService::class.java))
+    }
+
+    private fun hasCoarseLocPermission() =
+        ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+    /**
+     * Used to switch between text when notification are on/off
+     */
     private fun setNotifButtonText() {
         if (!notifOn) {
             binding.notifButton.text = "Turn on Notifications"
