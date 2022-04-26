@@ -44,6 +44,10 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 
+    // Androidx.core Kotlin
+    def core_version = "1.7.0"
+    implementation "androidx.core:core-ktx:$core_version"
+
     //Fragments
     def fragment_version = '1.4.1'
     implementation "androidx.fragment:fragment:$fragment_version"
