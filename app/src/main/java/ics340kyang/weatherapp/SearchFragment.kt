@@ -3,7 +3,12 @@ package ics340kyang.weatherapp
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,6 +32,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
     private val REQLOCATIONCODE = 10001
+    val CHANNEL_ID = "channelID"
+    private var notifOn = false
 
     @Inject
     lateinit var viewModel: SearchViewModel
@@ -85,8 +92,35 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 askLocPermission()
             }
         }
+        setNotifButtonText();
         binding.notifButton.setOnClickListener {
-            //TODO: Ask for notifation permission, ask for location permission if not on
+            notifOn = !notifOn
+            //Ask for notifation permission, ask for location permission if not on
+            setNotifButtonText();
+        }
+    }
+
+    private fun setNotifButtonText() {
+        if (!notifOn) {
+            binding.notifButton.text = "Turn on Notifications"
+        }
+        else {
+            binding.notifButton.text = "Turn off Notifications";
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the NotificationChannel
+            val channelName = getString(R.string.channel_name)
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val mChannel = NotificationChannel(CHANNEL_ID, channelName, importance)
+            mChannel.description = descriptionText
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            val notificationManager = requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(mChannel)
         }
     }
 
