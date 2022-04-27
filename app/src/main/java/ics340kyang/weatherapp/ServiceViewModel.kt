@@ -1,4 +1,6 @@
 package ics340kyang.weatherapp
+
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,9 +29,9 @@ class ServiceViewModel @Inject constructor(private val service: Api) : ViewModel
                             service.getCurrentConditionsLatLon(lat, long)
                         }
                     }
-                System.out.println("Successfully retrieved the currentcond object")
+                Log.d("WeatherMapAPI", "Call success in ServiceViewModel")
             } catch (e: Throwable) {
-                System.out.println("Call failed with lat lon")
+                Log.d("WeatherMapAPI", "Call failed with lat lon")
             }
         }
     }

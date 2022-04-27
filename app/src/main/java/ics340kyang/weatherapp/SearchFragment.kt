@@ -66,7 +66,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             executeSearch()
         }
         binding.locReqButton.setOnClickListener {
-            if (hasCoarseLocPermission()) {
+            if (hasFineLocPermission()) {
                 submitLastLocation()
             } else {
                 askLocPermission()
@@ -74,18 +74,43 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
         setNotifButtonText()
         binding.notifButton.setOnClickListener {
-            if (hasCoarseLocPermission()) {
+            if (hasFineLocPermission()) {
                 notifOn = !notifOn
                 setNotifButtonText()
                 if (notifOn) {
                     startLocNotifService()
-                }
-                else {
+                } else {
                     stopLocNotifService()
                 }
             } else {
-                askLocPermission()
+                askLocNotifPermission()
             }
+        }
+    }
+
+    private fun askLocNotifPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this.requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            /*Permission not granted*/
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this.requireActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                showLocationPermissionRationale()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this.requireActivity(),
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    REQLOCATIONCODE
+                )
+            }
+        } else {
+            // Permission is granted
+            startLocNotifService()
         }
     }
 
@@ -93,7 +118,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         val zipInput = binding.searchInputTextBox.text.toString()
         viewModel.updateZipCode(zipInput)
         viewModel.submitZipButton()
-        System.out.println(viewModel.showErrorDialog.value)
         val currentConditions = viewModel.currentConditionCall.value
         val action = currentConditions?.let { currentConditions ->
             SearchFragmentDirections.actionSearchFragmentToCurrentConditionsFragment(
@@ -114,8 +138,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         requireActivity().startService(Intent(context, LocNotifService::class.java))
     }
 
-    private fun hasCoarseLocPermission() =
-        ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    private fun hasFineLocPermission() =
+        ContextCompat.checkSelfPermission(
+            this.requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
 
     /**
      * Used to switch between text when notification are on/off
@@ -123,8 +150,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun setNotifButtonText() {
         if (!notifOn) {
             binding.notifButton.text = "Turn on Notifications"
-        }
-        else {
+        } else {
             binding.notifButton.text = "Turn off Notifications"
         }
     }
@@ -132,20 +158,20 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun askLocPermission() {
         if (ContextCompat.checkSelfPermission(
                 this.requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             /*Permission not granted*/
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this.requireActivity(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION
                 )
             ) {
                 showLocationPermissionRationale()
             } else {
                 ActivityCompat.requestPermissions(
                     this.requireActivity(),
-                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     REQLOCATIONCODE
                 )
             }
@@ -174,11 +200,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun showLocationPermissionRationale() {
         AlertDialog.Builder(this.activity)
-            .setTitle("Rationale")
+            .setTitle("Location Permission Request")
             .setMessage("Location needed to find local weather conditions")
             .setNeutralButton("Ok") { _, _ ->
                 locationPermissionRequest.launch(
-                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION)
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
                 )
             }
             .show()
