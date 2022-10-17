@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -183,7 +184,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     @SuppressLint("MissingPermission")
     private fun submitLastLocation() {
-        fusedLocationClient.lastLocation.addOnSuccessListener {
+        fusedLocationClient.lastLocation.addOnSuccessListener() {
             viewModel.updateLocation(it.latitude, it.longitude)
             viewModel.submitLocationButton()
             val currentConditions = viewModel.currentConditionCall.value

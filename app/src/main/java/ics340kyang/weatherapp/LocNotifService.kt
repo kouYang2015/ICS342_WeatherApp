@@ -26,13 +26,16 @@ class LocNotifService : Service() {
     val CHANNEL_ID = "channelID"
     val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            if (locationResult?.lastLocation != null) {
+            if (locationResult.lastLocation != null) {
                 Log.d(
                     "Service",
-                    "Location Updated| latitude:" + locationResult.lastLocation.latitude
-                            + " longitude:" + locationResult.lastLocation.longitude
+                    "Location Updated| latitude:" + locationResult.lastLocation?.latitude
+                            + " longitude:" + locationResult.lastLocation?.longitude
                 )
                 submitLastLocation()
+            }
+            else {
+                Log.d("LocationService", "Failed to get latitude and longitude.")
             }
         }
     }
@@ -78,7 +81,7 @@ class LocNotifService : Service() {
         locationRequest = LocationRequest.create()
         locationRequest.interval = 20000 //Slowest update every 20 sec
         locationRequest.fastestInterval = 10000 //Fastest update every 10 sec
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.priority = Priority.PRIORITY_HIGH_ACCURACY
     }
 
     private fun createNotificationAndPush(currentConditions: CurrentConditions) {
