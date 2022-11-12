@@ -48,7 +48,7 @@ class CurrentConditionsFragment : Fragment(R.layout.fragment_current_conditions)
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCurrentConditionsBinding.bind(view)
 
-        binding.forecastButton.setOnClickListener() {
+        binding.forecastButton.setOnClickListener {
             val action =
                 CurrentConditionsFragmentDirections.actionCurrentConditionsFragmentToForecastFragment(
                     args.currentConditionObj.coordinates
